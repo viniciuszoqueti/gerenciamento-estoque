@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class FornecedorDAO {
 
-    public Fornecedor buscaPorId(int id) throws DBErrorException{
+    public Fornecedor buscaPorId(int id) throws DBErrorException, InstantiationException, IllegalAccessException{
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -79,7 +79,7 @@ public class FornecedorDAO {
         
     }
     
-    public List<Fornecedor> buscaPorRazao(String razao) throws DBErrorException{
+    public List<Fornecedor> buscaPorRazao(String razao) throws DBErrorException, InstantiationException, IllegalAccessException{
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -114,7 +114,7 @@ public class FornecedorDAO {
         return lista;
     }
     
-    public List<Fornecedor> buscaTodos() throws DBErrorException{
+    public List<Fornecedor> buscaTodos() throws DBErrorException, InstantiationException, IllegalAccessException{
 
         Statement st = null;
         ResultSet rs = null;

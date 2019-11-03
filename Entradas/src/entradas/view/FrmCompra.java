@@ -697,6 +697,10 @@ public class FrmCompra extends javax.swing.JFrame {
         } catch (DBErrorException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
             this.tblProdutos.requestFocusInWindow();
+        } catch (InstantiationException ex) {
+            Logger.getLogger(FrmCompra.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(FrmCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botaoSalverActionPerformed
 
@@ -712,6 +716,10 @@ public class FrmCompra extends javax.swing.JFrame {
             
         } catch (DBErrorException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(FrmCompra.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(FrmCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
                 
     }//GEN-LAST:event_botaoExcluirActionPerformed

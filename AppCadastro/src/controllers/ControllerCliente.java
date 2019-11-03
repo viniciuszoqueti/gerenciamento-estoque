@@ -16,26 +16,46 @@ import model.Cliente;
  * @author Nicolas
  */
 public class ControllerCliente {
+
     ClienteDAO dao;
 
     public ControllerCliente() throws InstantiationException, IllegalAccessException {
         this.dao = new ClienteDAO();
     }
-    
-     public void Excluir(Cliente cliente) throws Exception {
 
-        dao.delete(cliente.getId());
+    public void Excluir(Cliente cliente) throws Exception {
+
+        try {
+            dao.delete(cliente.getId());
+            cliente.criaDelete();
+
+        } catch (SQLException ex) {
+            throw ex;
+        }
 
     }
 
     public void Editar(Cliente cliente) throws SQLException {
-        dao.update(cliente);
+
+        try {
+            dao.update(cliente);
+            cliente.criaNovo();
+
+        } catch (SQLException ex) {
+            throw ex;
+        }
     }
 
     public void Adicionar(Cliente cliente) throws SQLException {
-        dao.insert(cliente);
-    }
 
+        try {
+            dao.insert(cliente);
+            cliente.criaNovo();
+
+        } catch (SQLException ex) {
+            throw ex;
+        }
+    }
 
     public AdapterClienteJTable AllTable() throws SQLException {
         List<Cliente> clientes = dao.selectAll();

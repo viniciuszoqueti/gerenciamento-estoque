@@ -22,7 +22,7 @@ public class ControladorFornecedor {
         fdao = new FornecedorDAO();
     }
 
-    public List<Fornecedor> buscaFornecedores(String razao) throws DBErrorException {
+    public List<Fornecedor> buscaFornecedores(String razao) throws DBErrorException, InstantiationException, IllegalAccessException {
         if (!razao.equals(""))
             return fdao.buscaPorRazao(razao);
         else

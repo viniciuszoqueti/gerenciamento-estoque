@@ -13,6 +13,8 @@ import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -332,6 +334,10 @@ public class FrmPesquisaCompra extends JDialog {
         } catch (DBErrorException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
             this.edtCodFor.requestFocusInWindow();
+        } catch (InstantiationException ex) {
+            Logger.getLogger(FrmPesquisaCompra.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(FrmPesquisaCompra.class.getName()).log(Level.SEVERE, null, ex);
         }        
         
     }//GEN-LAST:event_botaoPesquisarCompraActionPerformed

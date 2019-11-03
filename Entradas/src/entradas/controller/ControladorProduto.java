@@ -22,7 +22,7 @@ public class ControladorProduto {
         dao = new ProdutoDAO();
     }
 
-    public List<Produto> buscaProdutos(String desc) throws DBErrorException {
+    public List<Produto> buscaProdutos(String desc) throws DBErrorException, InstantiationException, IllegalAccessException {
         if (!desc.equals(""))
             return dao.buscaPorDescricao(desc);
         else

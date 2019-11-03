@@ -11,6 +11,8 @@ import entradas.model.Fornecedor;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -277,6 +279,10 @@ public class FrmPesquisaFornecedor extends JDialog {
         } catch (DBErrorException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
             this.edtNomeFor.requestFocusInWindow();
+        } catch (InstantiationException ex) {
+            Logger.getLogger(FrmPesquisaFornecedor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(FrmPesquisaFornecedor.class.getName()).log(Level.SEVERE, null, ex);
         }  
             
         
@@ -305,6 +311,10 @@ public class FrmPesquisaFornecedor extends JDialog {
             } catch (DBErrorException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
                 this.edtNomeFor.requestFocusInWindow();
+            } catch (InstantiationException ex) {
+                Logger.getLogger(FrmPesquisaFornecedor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(FrmPesquisaFornecedor.class.getName()).log(Level.SEVERE, null, ex);
             }  
             
         }

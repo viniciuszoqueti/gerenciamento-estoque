@@ -26,17 +26,36 @@ public class ControllerFornecedor {
     }
 
     public void Excluir(Fornecedor fornecedor) throws Exception {
-
-        dao.delete(fornecedor.getId());
-
+        try {
+            dao.delete(fornecedor.getId());
+            fornecedor.criaDelete();
+        } catch (SQLException ex) {
+            throw ex;
+        }
     }
 
     public void Editar(Fornecedor fornecedor) throws SQLException {
-        dao.update(fornecedor);
+
+        try {
+            dao.update(fornecedor);
+            fornecedor.criaNovo();
+
+        } catch (SQLException ex) {
+            throw ex;
+        }
+
     }
 
     public void Adicionar(Fornecedor fornecedor) throws SQLException {
-        dao.insert(fornecedor);
+
+        try {
+            dao.insert(fornecedor);
+            fornecedor.criaNovo();
+
+        } catch (SQLException ex) {
+            throw ex;
+        }
+
     }
 
     public List<Fornecedor> getFornecedores() throws SQLException {

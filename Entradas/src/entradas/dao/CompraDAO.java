@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class CompraDAO {
     
-    public void salvar( Compra compra ) throws DBErrorException{
+    public void salvar( Compra compra ) throws DBErrorException, InstantiationException, IllegalAccessException{
     
         if (compra.getId() == 0)
             this.insert(compra);
@@ -32,7 +32,7 @@ public class CompraDAO {
             this.update(compra);
     }
     
-    private void insert(Compra compra) throws DBErrorException{
+    private void insert(Compra compra) throws DBErrorException, InstantiationException, IllegalAccessException{
         
         PreparedStatement ps = null;
         
@@ -64,7 +64,7 @@ public class CompraDAO {
         }        
     }
     
-    private void insereItens(Compra compra) throws DBErrorException{
+    private void insereItens(Compra compra) throws DBErrorException, InstantiationException, IllegalAccessException{
         
         PreparedStatement ps = null;
         
@@ -102,7 +102,7 @@ public class CompraDAO {
         
     }
     
-    private void update(Compra compra) throws DBErrorException{
+    private void update(Compra compra) throws DBErrorException, InstantiationException, IllegalAccessException{
         
         PreparedStatement ps = null;
         
@@ -132,12 +132,12 @@ public class CompraDAO {
         }        
     }
     
-    private void updateItens(Compra compra) throws DBErrorException{
+    private void updateItens(Compra compra) throws DBErrorException, InstantiationException, IllegalAccessException{
         removeItens(compra);
         insereItens(compra);
     }
     
-    private void removeItens(Compra compra) throws DBErrorException{
+    private void removeItens(Compra compra) throws DBErrorException, InstantiationException, IllegalAccessException{
         
         PreparedStatement ps = null;
         
@@ -162,7 +162,7 @@ public class CompraDAO {
         
     }
     
-    public void delete(Compra compra) throws DBErrorException{
+    public void delete(Compra compra) throws DBErrorException, InstantiationException, IllegalAccessException{
         
         PreparedStatement ps = null;
         
@@ -189,7 +189,7 @@ public class CompraDAO {
     
     }
 
-    private int buscaUltimoIdInserido() throws DBErrorException{
+    private int buscaUltimoIdInserido() throws DBErrorException, InstantiationException, IllegalAccessException{
 
         Statement st = null;
         ResultSet rs = null;
@@ -215,7 +215,7 @@ public class CompraDAO {
         return 0;
     }
     
-    private Compra buscaPorId(int id) throws DBErrorException{
+    private Compra buscaPorId(int id) throws DBErrorException, InstantiationException, IllegalAccessException{
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -246,7 +246,7 @@ public class CompraDAO {
         return null;
     }
 
-    private void preencheObjeto(Compra compra, ResultSet rs) throws SQLException, ValorInvalidoException, DBErrorException, ClassNotFoundException{
+    private void preencheObjeto(Compra compra, ResultSet rs) throws SQLException, ValorInvalidoException, DBErrorException, ClassNotFoundException, InstantiationException, IllegalAccessException{
         
         compra.setId(rs.getInt("id"));
         compra.setNota(rs.getString("num_nota"));
@@ -258,7 +258,7 @@ public class CompraDAO {
             
     }
 
-    private List<CompraItem> buscaItensCompra(int compra_id) throws SQLException, ValorInvalidoException, DBErrorException, ClassNotFoundException {
+    private List<CompraItem> buscaItensCompra(int compra_id) throws SQLException, ValorInvalidoException, DBErrorException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -283,7 +283,7 @@ public class CompraDAO {
         return lista;
     }
 
-    private void preencheObjetoItem(CompraItem item, ResultSet rs) throws SQLException, ValorInvalidoException, DBErrorException {
+    private void preencheObjetoItem(CompraItem item, ResultSet rs) throws SQLException, ValorInvalidoException, DBErrorException, InstantiationException, IllegalAccessException {
         
         item.setId(rs.getInt("id"));
         item.setQuantidade(rs.getDouble("quantidade"));
@@ -294,7 +294,7 @@ public class CompraDAO {
         
     }
 
-    public ArrayList<Compra> buscaPorFornecedor(Fornecedor fornecedor) throws DBErrorException{
+    public ArrayList<Compra> buscaPorFornecedor(Fornecedor fornecedor) throws DBErrorException, InstantiationException, IllegalAccessException{
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -328,7 +328,7 @@ public class CompraDAO {
         return lista;
     }
 
-    public ArrayList<Compra> buscaPorPeriodo(Calendar dataInicial, Calendar dataFinal) throws DBErrorException{
+    public ArrayList<Compra> buscaPorPeriodo(Calendar dataInicial, Calendar dataFinal) throws DBErrorException, InstantiationException, IllegalAccessException{
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -363,7 +363,7 @@ public class CompraDAO {
         return lista;
     }
 
-    public Compra buscaCompraPorNotaFiscal(String nota) throws DBErrorException{
+    public Compra buscaCompraPorNotaFiscal(String nota) throws DBErrorException, InstantiationException, IllegalAccessException{
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -394,7 +394,7 @@ public class CompraDAO {
         return null;
     }
     
-    public ArrayList<Compra> getTodasCompras() throws DBErrorException{
+    public ArrayList<Compra> getTodasCompras() throws DBErrorException, InstantiationException, IllegalAccessException{
 
         Statement st = null;
         ResultSet rs = null;

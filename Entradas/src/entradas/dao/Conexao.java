@@ -14,27 +14,30 @@ import java.sql.SQLException;
  * @author Tiago
  */
 public class Conexao {
- 
+
     public static Connection con = null;
-    
-    public static Connection getConexao() throws ClassNotFoundException, SQLException {
-        if ( con == null)
+
+    public static Connection getConexao() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        if (con == null) {
             criaConexao();
+        }
         return con;
     }
-    
-    public static void criaConexao() throws ClassNotFoundException, SQLException{
-        
-        Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection ("jdbc:mysql://127.0.0.1:3306/compras", "root", "");
+
+    public static void criaConexao() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+
+        //Class.forName("com.mysql.jdbc.Driver");
+        //con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/compras", "root", "vi-963852741");
+        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/compras?useTimezone=true&serverTimezone=UTC", "root", "vi-963852741");
+
         con.setAutoCommit(false);
         con.setTransactionIsolation(con.TRANSACTION_READ_COMMITTED);
-        
+
     }
-    
-    public static void fechaConexao() throws SQLException{
+
+    public static void fechaConexao() throws SQLException {
         con.close();
     }
 
-    
 }

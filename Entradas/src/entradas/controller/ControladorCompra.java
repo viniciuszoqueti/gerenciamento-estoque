@@ -86,17 +86,17 @@ public class ControladorCompra {
         
     }
 
-    public void salvar() throws DBErrorException {
+    public void salvar() throws DBErrorException, InstantiationException, IllegalAccessException {
         this.compraDAO.salvar(compra);
         this.compra = new Compra();
     }
 
-    public void excluiCompra() throws DBErrorException {
+    public void excluiCompra() throws DBErrorException, InstantiationException, IllegalAccessException {
         this.compraDAO.delete(compra);
         this.compra = new Compra();
     }
 
-    public List<Compra> buscaEntradas(String codfor) throws DBErrorException {
+    public List<Compra> buscaEntradas(String codfor) throws DBErrorException, InstantiationException, IllegalAccessException {
     
         
         List<Compra> l;

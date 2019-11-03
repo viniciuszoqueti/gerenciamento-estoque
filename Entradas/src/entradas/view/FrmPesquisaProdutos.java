@@ -11,6 +11,8 @@ import entradas.model.Produto;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -280,7 +282,13 @@ public class FrmPesquisaProdutos extends JDialog {
 
     private void botaoPesquisarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPesquisarCompraActionPerformed
         
-        buscaProdutos();
+        try {
+            buscaProdutos();
+        } catch (InstantiationException ex) {
+            Logger.getLogger(FrmPesquisaProdutos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(FrmPesquisaProdutos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
             
         
@@ -300,12 +308,18 @@ public class FrmPesquisaProdutos extends JDialog {
     private void edtDescricaoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtDescricaoKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             
-            buscaProdutos();
+            try {
+                buscaProdutos();
+            } catch (InstantiationException ex) {
+                Logger.getLogger(FrmPesquisaProdutos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(FrmPesquisaProdutos.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
         }
     }//GEN-LAST:event_edtDescricaoKeyPressed
 
-    private void buscaProdutos(){
+    private void buscaProdutos() throws InstantiationException, IllegalAccessException{
         try {
             
             produtos = this.controlador.buscaProdutos( this.edtDescricao.getText() );

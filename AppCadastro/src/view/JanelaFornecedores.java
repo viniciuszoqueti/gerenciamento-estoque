@@ -79,7 +79,7 @@ public class JanelaFornecedores extends javax.swing.JFrame {
         jbtnEditar.setEnabled(true);
         jbtnExcluir.setEnabled(true);
         jtxtRazao.setText(fornecedor.getRazao());
-        jtxtFantasia.setText("Faltando");
+        jtxtFantasia.setText(fornecedor.getFantasia());
         jtxtCnpjCpf.setText(fornecedor.getCpf_cnpj());
         jtxtInscricao.setText(fornecedor.getRg_insc());
         jtxtTelefone.setText(fornecedor.getTelefone());
@@ -553,7 +553,7 @@ public class JanelaFornecedores extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnEditarActionPerformed
 
     private void jtbFornecedoresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtbFornecedoresKeyPressed
-       
+
     }//GEN-LAST:event_jtbFornecedoresKeyPressed
 
     private void jtbFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbFornecedoresMouseClicked
@@ -565,7 +565,7 @@ public class JanelaFornecedores extends javax.swing.JFrame {
     }//GEN-LAST:event_jtxtBuscarKeyReleased
 
     private void jtbFornecedoresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtbFornecedoresKeyReleased
-       tableaValue();
+        tableaValue();
     }//GEN-LAST:event_jtbFornecedoresKeyReleased
 
     /**

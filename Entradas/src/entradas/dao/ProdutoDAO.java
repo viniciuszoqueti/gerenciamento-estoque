@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class ProdutoDAO {
 
-    public Produto buscaPorId(int id)  throws DBErrorException{
+    public Produto buscaPorId(int id)  throws DBErrorException, InstantiationException, IllegalAccessException{
         
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -54,7 +54,7 @@ public class ProdutoDAO {
         return null;
     }
 
-    private void preencheObjeto(Produto p, ResultSet rs) throws DBErrorException, SQLException, ValorInvalidoException{
+    private void preencheObjeto(Produto p, ResultSet rs) throws DBErrorException, SQLException, ValorInvalidoException, InstantiationException, IllegalAccessException{
 
         p.setCodigoBarras(rs.getString("codigo_barras"));
         p.setCusto(rs.getDouble("vlr_custo"));
@@ -83,7 +83,7 @@ public class ProdutoDAO {
         
     }
 
-    public List<Produto> buscaPorDescricao(String desc) throws DBErrorException{
+    public List<Produto> buscaPorDescricao(String desc) throws DBErrorException, InstantiationException, IllegalAccessException{
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -118,7 +118,7 @@ public class ProdutoDAO {
         return lista;
     }
     
-    public List<Produto> buscaTodos() throws DBErrorException{
+    public List<Produto> buscaTodos() throws DBErrorException, InstantiationException, IllegalAccessException{
 
         Statement st = null;
         ResultSet rs = null;

@@ -5,6 +5,9 @@
  */
 package model;
 
+import java.time.Instant;
+import utils.GravaArquivo;
+
 /**
  *
  * @author 23021-9
@@ -27,6 +30,31 @@ public class Marca {
     public Marca(int id) {
         this.id = id;
 
+    }
+
+    public void criaNovo() {
+
+        StringBuilder conteudo = new StringBuilder();
+        String acao = "INSERIR@ID_ARQUIVO=" + Instant.now().toEpochMilli();
+
+        if (id > 0) {
+            conteudo.append(id).append(";");
+            acao = "ALTERAR@ID=" + id;
+        }
+
+        conteudo.append(marca);
+
+        GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
+    }
+
+    public void criaDelete() {
+        StringBuilder conteudo = new StringBuilder();
+        String acao = "DELETAR@ID" + id;
+
+        conteudo.append(id).append(";");
+        conteudo.append(marca);
+
+        GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
     }
 
     public int getId() {
@@ -75,7 +103,4 @@ public class Marca {
         return true;
     }
 
-    
-    
-    
 }

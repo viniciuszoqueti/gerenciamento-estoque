@@ -16,25 +16,45 @@ import model.Produto;
  * @author Nicolas
  */
 public class ControllerProduto {
+
     ProdutoDAO dao;
 
     public ControllerProduto() throws InstantiationException, IllegalAccessException {
         this.dao = new ProdutoDAO();
     }
-    
-    
+
     public void Excluir(Produto produto) throws Exception {
 
-        dao.delete(produto.getId());
+        try {
+            dao.delete(produto.getId());
+            produto.criaDelete();
+
+        } catch (SQLException ex) {
+            throw ex;
+        }
 
     }
 
     public void Editar(Produto produto) throws SQLException {
-        dao.update(produto);
+
+        try {
+            dao.update(produto);
+            produto.criaNovo();
+
+        } catch (SQLException ex) {
+            throw ex;
+        }
     }
 
     public void Adicionar(Produto produto) throws SQLException {
-        dao.insert(produto);
+
+        try {
+            dao.insert(produto);
+            produto.criaNovo();
+
+        } catch (SQLException ex) {
+            throw ex;
+        }
     }
 
     public AdapterProdutoJTable AllTable() throws SQLException {

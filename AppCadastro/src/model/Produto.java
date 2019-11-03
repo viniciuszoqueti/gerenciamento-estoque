@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.Date;
+import java.time.Instant;
+import utils.GravaArquivo;
 
 public class Produto {
 
@@ -14,17 +16,57 @@ public class Produto {
     private Marca marca;
     private Fornecedor fornecedor;
 
-    public Produto(){}
-    
+    public Produto() {
+    }
+
     public Produto(int id, String nome, int estoque, float precoVenda, float precoCusto, Marca marca, Fornecedor fornecedor) {
         this.id = id;
         this.nome = nome;
         this.estoque = estoque;
         this.precoVenda = precoVenda;
         this.precoCusto = precoCusto;
-    
+
         this.marca = marca;
         this.fornecedor = fornecedor;
+    }
+
+    public void criaNovo() {
+
+        StringBuilder conteudo = new StringBuilder();
+        String acao = "INSERIR@ID_ARQUIVO=" + Instant.now().toEpochMilli();
+
+        if (id > 0) {
+            conteudo.append(id).append(";");
+            acao = "ALTERAR@ID=" + id;
+        }
+
+        conteudo.append(nome).append(";");
+        conteudo.append(estoque).append(";");
+        conteudo.append(precoVenda).append(";");
+        conteudo.append(precoCusto).append(";");
+        conteudo.append(dataCompra).append(";");
+        conteudo.append(dataVenda).append(";");
+        conteudo.append(marca.getId()).append(";");
+        conteudo.append(fornecedor.getId());
+
+        GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
+    }
+
+    public void criaDelete() {
+        StringBuilder conteudo = new StringBuilder();
+        String acao = "DELETAR@ID" + id;
+
+        conteudo.append(id).append(";");
+        conteudo.append(nome).append(";");
+        conteudo.append(estoque).append(";");
+        conteudo.append(precoVenda).append(";");
+        conteudo.append(precoCusto).append(";");
+        conteudo.append(dataCompra).append(";");
+        conteudo.append(dataVenda).append(";");
+        conteudo.append(marca.getId()).append(";");
+        conteudo.append(fornecedor.getId());
+
+        GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
     }
 
     public int getId() {

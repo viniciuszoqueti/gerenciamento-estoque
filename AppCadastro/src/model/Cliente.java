@@ -6,12 +6,15 @@
 package model;
 
 import java.sql.Date;
+import java.time.Instant;
+import utils.GravaArquivo;
 
 /**
  *
  * @author 23034-2
  */
 public class Cliente {
+
     private int id;
     private String nome;
     private Date dat_nascimento;
@@ -23,11 +26,8 @@ public class Cliente {
     private String cidade;
     private String estado;
     private String cep;
-    
-    
-  
 
-    public Cliente(int id,String nome, Date dat_nascimento, String cpf, String rg, String endereco, String numero, String bairro, String cidade, String estado, String cep) {
+    public Cliente(int id, String nome, Date dat_nascimento, String cpf, String rg, String endereco, String numero, String bairro, String cidade, String estado, String cep) {
         this.id = id;
         this.nome = nome;
         this.dat_nascimento = dat_nascimento;
@@ -42,10 +42,50 @@ public class Cliente {
     }
 
     public Cliente() {
-      
+
     }
 
-    
+    public void criaNovo() {
+
+        StringBuilder conteudo = new StringBuilder();
+        String acao = "INSERIR@ID_ARQUIVO=" + Instant.now().toEpochMilli();
+
+        if (id > 0) {
+            conteudo.append(id).append(";");
+            acao = "ALTERAR@ID=" + id;
+        }
+
+        conteudo.append(nome).append(";");
+        conteudo.append(dat_nascimento).append(";");
+        conteudo.append(cpf).append(";");
+        conteudo.append(rg).append(";");
+        conteudo.append(endereco).append(";");
+        conteudo.append(numero).append(";");
+        conteudo.append(bairro).append(";");
+        conteudo.append(cidade).append(";");
+        conteudo.append(estado).append(";");
+        conteudo.append(cep);
+
+        GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
+    }
+
+    public void criaDelete() {
+        StringBuilder conteudo = new StringBuilder();
+        String acao = "DELETAR@ID" + id;
+
+        conteudo.append(id).append(";");
+        conteudo.append(nome).append(";");
+        conteudo.append(dat_nascimento).append(";");
+        conteudo.append(cpf).append(";");
+        conteudo.append(rg).append(";");
+        conteudo.append(endereco).append(";");
+        conteudo.append(numero).append(";");
+        conteudo.append(bairro).append(";");
+        conteudo.append(cidade).append(";");
+        conteudo.append(estado).append(";");
+        conteudo.append(cep);
+        GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
+    }
 
     public String getNome() {
         return nome;
@@ -134,6 +174,5 @@ public class Cliente {
     public void setId(int id) {
         this.id = id;
     }
-    
-    
+
 }

@@ -5,6 +5,9 @@
  */
 package model;
 
+import java.time.Instant;
+import utils.GravaArquivo;
+
 /**
  *
  * @author 23016-9
@@ -32,16 +35,49 @@ public class Fornecedor {
         this.id = id;
     }
 
+    public Fornecedor() {
+
+    }
+
+    public void criaNovo() {
+
+        StringBuilder conteudo = new StringBuilder();
+        String acao = "INSERIR@ID_ARQUIVO=" + Instant.now().toEpochMilli();
+
+        if (id > 0) {
+            conteudo.append(id).append(";");
+            acao = "ALTERAR@ID=" + id;
+        }
+
+        conteudo.append(razao).append(";");
+        conteudo.append(cpf_cnpj).append(";");
+        conteudo.append(rg_insc).append(";");
+        conteudo.append(telefone).append(";");
+        conteudo.append(fantasia);
+
+        GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
+    }
+
+    public void criaDelete() {
+        StringBuilder conteudo = new StringBuilder();
+        String acao = "DELETAR@ID" + id;
+
+        conteudo.append(id).append(";");
+        conteudo.append(razao).append(";");
+        conteudo.append(cpf_cnpj).append(";");
+        conteudo.append(rg_insc).append(";");
+        conteudo.append(telefone).append(";");
+        conteudo.append(fantasia);
+
+        GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
+    }
+
     public String getFantasia() {
         return fantasia;
     }
 
     public void setFantasia(String fantasia) {
         this.fantasia = fantasia;
-    }
-
-    public Fornecedor() {
-
     }
 
     public int getId() {
