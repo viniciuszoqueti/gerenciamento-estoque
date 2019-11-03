@@ -31,17 +31,18 @@ public class JanelaCliente extends javax.swing.JFrame {
     private AdapterClienteJTable adapterClienteJTable;
     private long idSelecionado = 0;
     private boolean editar = false;
+
     /**
      * Creates new form JanelaCliente
      */
     public JanelaCliente() throws InstantiationException, IllegalAccessException {
         this.controllerCliente = new ControllerCliente();
         initComponents();
-        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         load();
     }
-    
+
     private void tableaValue() {
         int row = jtbClientes.getSelectedRow();
         Cliente cliente = adapterClienteJTable.getValue(row);
@@ -56,10 +57,13 @@ public class JanelaCliente extends javax.swing.JFrame {
         jTextFieldPesqEstado.setText(cliente.getEstado());
         jTextFieldPesqRG.setText(cliente.getRg());
         jTextFieldPesquisaCEP.setText(cliente.getCep());
-        
+         jTextFieldIDPesq.setText(String.valueOf(idSelecionado));
+        jbtnEditar.setEnabled(true);
+        jbtnExcluir.setEnabled(true);
+
     }
-    
-     private void load() {
+
+    private void load() {
 
         List<Cliente> clientes = null;
         try {
@@ -71,8 +75,8 @@ public class JanelaCliente extends javax.swing.JFrame {
         }
 
     }
-     
-     public void filtrarTabela(String valueFilter) {
+
+    public void filtrarTabela(String valueFilter) {
 
         TableRowSorter sorter = new TableRowSorter(adapterClienteJTable);
         jtbClientes.setRowSorter(sorter);
@@ -90,25 +94,24 @@ public class JanelaCliente extends javax.swing.JFrame {
         }
 
     }
-  
-     private void salvar(boolean editar) throws ParseException {
 
-        String nome     = jTextFieldNomePesq.getText();
+    private void salvar(boolean editar) throws ParseException {
+
+        String nome = jTextFieldNomePesq.getText();
         String endereco = jTextFieldEndPesq.getText();
-        String numero   = jTextFieldNumPesq.getText();
-        String bairro   = jTextFieldPesqBairro.getText();
-        String cpf      = jTextFieldPesqCPF.getText();
-        String cidade   = jTextFieldPesqCidade.getText();
+        String numero = jTextFieldNumPesq.getText();
+        String bairro = jTextFieldPesqBairro.getText();
+        String cpf = jTextFieldPesqCPF.getText();
+        String cidade = jTextFieldPesqCidade.getText();
         String data_nas = jTextFieldPesqDtNasc.getText();
-        String estado   = jTextFieldPesqEstado.getText();
-        String rg       = jTextFieldPesqRG.getText();
-        String Cep      = jTextFieldPesquisaCEP.getText();
-     
+        String estado = jTextFieldPesqEstado.getText();
+        String rg = jTextFieldPesqRG.getText();
+        String Cep = jTextFieldPesquisaCEP.getText();
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         java.sql.Date data_nascimento = new java.sql.Date(simpleDateFormat.parse(data_nas).getTime());
-        
-           
-        Cliente cliente = new Cliente((int)idSelecionado,nome,data_nascimento,cpf,rg,endereco,numero,bairro,cidade,estado,Cep);
+
+        Cliente cliente = new Cliente((int) idSelecionado, nome, data_nascimento, cpf, rg, endereco, numero, bairro, cidade, estado, Cep);
 
         boolean result = true;
 
@@ -125,7 +128,7 @@ public class JanelaCliente extends javax.swing.JFrame {
 
             try {
                 controllerCliente.Adicionar(cliente);
-                 JOptionPane.showMessageDialog(rootPane, "Cliente Criado com Sucesso!");
+                JOptionPane.showMessageDialog(rootPane, "Cliente Criado com Sucesso!");
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex);
                 result = false;
@@ -133,35 +136,43 @@ public class JanelaCliente extends javax.swing.JFrame {
         }
 
         if (result) {
-        idSelecionado = 0;
-        jTextFieldIDPesq.setEnabled(false);
-        jTextFieldEndPesq.setEnabled(true);
-        jTextFieldNomePesq.setEnabled(true);
-        jTextFieldNumPesq.setEnabled(true);
-        jTextFieldPesqBairro.setEnabled(true);
-        jTextFieldPesqCPF.setEnabled(true);
-        jTextFieldPesqCidade.setEnabled(true);
-        jTextFieldPesqDtNasc.setEnabled(true);
-        jTextFieldPesqEstado.setEnabled(true);
-        jTextFieldPesqRG.setEnabled(true);
-        jTextFieldPesquisaCEP.setEnabled(true);
 
-        jTextFieldEndPesq.setText("");
-        jTextFieldNomePesq.setText("");
-        jTextFieldNumPesq.setText("");
-        jTextFieldPesqBairro.setText("");
-        jTextFieldPesqCPF.setText("");
-        jTextFieldPesqCidade.setText("");
-        jTextFieldPesqDtNasc.setText("");
-        jTextFieldPesqEstado.setText("");
-        jTextFieldPesqRG.setText("");
-        jTextFieldPesquisaCEP.setText("");
+            idSelecionado = 0;
+            jbtnNovo.setEnabled(true);
+            jbtnEditar.setEnabled(false);
+            jbtnExcluir.setEnabled(false);
+            jbtnSalvar.setEnabled(false);
+            jbtnCancelar.setEnabled(false);
+            jtbClientes.setEnabled(true);
+
+            jTextFieldEndPesq.setEnabled(false);
+            jTextFieldNomePesq.setEnabled(false);
+            jTextFieldNumPesq.setEnabled(false);
+            jTextFieldPesqBairro.setEnabled(false);
+            jTextFieldPesqCPF.setEnabled(false);
+            jTextFieldPesqCidade.setEnabled(false);
+            jTextFieldPesqDtNasc.setEnabled(false);
+            jTextFieldPesqEstado.setEnabled(false);
+            jTextFieldPesqRG.setEnabled(false);
+            jTextFieldPesquisaCEP.setEnabled(false);
+
+            jTextFieldEndPesq.setText("");
+            jTextFieldNomePesq.setText("");
+            jTextFieldNumPesq.setText("");
+            jTextFieldPesqBairro.setText("");
+            jTextFieldPesqCPF.setText("");
+            jTextFieldPesqCidade.setText("");
+            jTextFieldPesqDtNasc.setText("");
+            jTextFieldPesqEstado.setText("");
+            jTextFieldPesqRG.setText("");
+            jTextFieldPesquisaCEP.setText("");
 
             load();
         } else {
             JOptionPane.showMessageDialog(rootPane, "Erro ao salvar");
         }
-     }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -194,17 +205,19 @@ public class JanelaCliente extends javax.swing.JFrame {
         jTextFieldPesqCidade = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtbClientes = new javax.swing.JTable();
-        jButtonPesq = new javax.swing.JButton();
         jTextFieldNomePesq = new javax.swing.JTextField();
         jLabelNomePesq = new javax.swing.JLabel();
         jLabelMargemPesq1 = new javax.swing.JLabel();
         jTextFieldPesqEstado = new javax.swing.JTextField();
         jTextFieldPesquisaCEP = new javax.swing.JTextField();
         jLabelMargemPesq2 = new javax.swing.JLabel();
-        jButtonSalvar = new javax.swing.JButton();
-        jButtonDeletar = new javax.swing.JButton();
-        jButtonEditar = new javax.swing.JButton();
-        jButtonCancelar = new javax.swing.JButton();
+        jtxtBuscar = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jbtnNovo = new javax.swing.JButton();
+        jbtnSalvar = new javax.swing.JButton();
+        jbtnEditar = new javax.swing.JButton();
+        jbtnExcluir = new javax.swing.JButton();
+        jbtnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -294,15 +307,11 @@ public class JanelaCliente extends javax.swing.JFrame {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jtbClientesKeyPressed(evt);
             }
-        });
-        jScrollPane2.setViewportView(jtbClientes);
-
-        jButtonPesq.setText("Pesquisar");
-        jButtonPesq.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPesqActionPerformed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtbClientesKeyReleased(evt);
             }
         });
+        jScrollPane2.setViewportView(jtbClientes);
 
         jTextFieldNomePesq.setFont(new java.awt.Font("Trebuchet MS", 0, 18)); // NOI18N
         jTextFieldNomePesq.setEnabled(false);
@@ -322,32 +331,57 @@ public class JanelaCliente extends javax.swing.JFrame {
         jLabelMargemPesq2.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
         jLabelMargemPesq2.setText("CEP:");
 
-        jButtonSalvar.setText("Salvar");
-        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSalvarActionPerformed(evt);
+        jtxtBuscar.setFont(new java.awt.Font("Trebuchet MS", 0, 18)); // NOI18N
+        jtxtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtxtBuscarKeyReleased(evt);
             }
         });
 
-        jButtonDeletar.setText("Deletar");
-        jButtonDeletar.addActionListener(new java.awt.event.ActionListener() {
+        jLabel3.setText("Buscar:");
+
+        jbtnNovo.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jbtnNovo.setText("NOVO");
+        jbtnNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDeletarActionPerformed(evt);
+                jbtnNovoActionPerformed(evt);
             }
         });
 
-        jButtonEditar.setText("editar");
-        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+        jbtnSalvar.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jbtnSalvar.setText("SALVAR");
+        jbtnSalvar.setEnabled(false);
+        jbtnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEditarActionPerformed(evt);
+                jbtnSalvarActionPerformed(evt);
             }
         });
 
-        jButtonCancelar.setText("Cancelar");
-        jButtonCancelar.setToolTipText("");
-        jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+        jbtnEditar.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jbtnEditar.setText("EDITAR");
+        jbtnEditar.setEnabled(false);
+        jbtnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCancelarActionPerformed(evt);
+                jbtnEditarActionPerformed(evt);
+            }
+        });
+
+        jbtnExcluir.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jbtnExcluir.setText("EXCLUIR");
+        jbtnExcluir.setEnabled(false);
+        jbtnExcluir.setName(""); // NOI18N
+        jbtnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnExcluirActionPerformed(evt);
+            }
+        });
+
+        jbtnCancelar.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jbtnCancelar.setText("CANCELAR");
+        jbtnCancelar.setEnabled(false);
+        jbtnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnCancelarActionPerformed(evt);
             }
         });
 
@@ -362,11 +396,24 @@ public class JanelaCliente extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelCodBarrasPesq)
-                            .addComponent(jLabelIDPesq)
-                            .addComponent(jLabelCustoPesq)
-                            .addComponent(jLabelEstoquePesq))
+                            .addComponent(jLabelIDPesq, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabelCustoPesq, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabelEstoquePesq, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jTextFieldIDPesq, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jLabelNomePesq)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jTextFieldNomePesq))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jTextFieldEndPesq, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jLabelUltVendaPesq)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldNumPesq, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -382,99 +429,91 @@ public class JanelaCliente extends javax.swing.JFrame {
                                     .addComponent(jTextFieldPesqBairro, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
                                     .addComponent(jTextFieldPesqCidade))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabelMargemPesq))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jTextFieldIDPesq, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jLabelNomePesq)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jTextFieldNomePesq))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jTextFieldEndPesq, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                                            .addComponent(jLabelUltVendaPesq))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(0, 0, Short.MAX_VALUE)
-                                            .addComponent(jLabelMargemPesq1)))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextFieldPesqDtNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldNumPesq, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldPesqEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabelMargemPesq2)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jTextFieldPesquisaCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jTextFieldPesquisaCEP))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButtonPesq, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButtonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabelMargemPesq1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButtonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jTextFieldPesqEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)))
+                                .addComponent(jtxtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabelMargemPesq)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextFieldPesqDtNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                                .addComponent(jbtnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbtnSalvar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbtnEditar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbtnExcluir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbtnCancelar)
+                                .addGap(19, 19, 19)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextFieldNomePesq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabelNomePesq))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextFieldIDPesq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabelIDPesq))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButtonPesq)
-                        .addComponent(jButtonSalvar)
-                        .addComponent(jButtonEditar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextFieldNomePesq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelNomePesq)
+                            .addComponent(jTextFieldIDPesq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelIDPesq)
+                            .addComponent(jLabelMargemPesq)
+                            .addComponent(jTextFieldPesqDtNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbtnNovo)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jbtnSalvar)
+                                .addComponent(jbtnEditar)
+                                .addComponent(jbtnExcluir)
+                                .addComponent(jbtnCancelar)))))
+                .addGap(7, 7, 7)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldEndPesq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelCodBarrasPesq)
                     .addComponent(jLabelUltVendaPesq)
-                    .addComponent(jTextFieldNumPesq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonDeletar)
-                    .addComponent(jButtonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldNumPesq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabelMargemPesq1)
-                        .addComponent(jTextFieldPesqEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextFieldPesqCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabelCustoPesq)
-                        .addComponent(jTextFieldPesqBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabelVendaPesq)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldPesqCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelCustoPesq)
+                    .addComponent(jTextFieldPesqBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelVendaPesq)
+                    .addComponent(jLabelMargemPesq1)
+                    .addComponent(jTextFieldPesqEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextFieldPesqRG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabelEstoquePesq)
                         .addComponent(jLabelCompraPesq)
-                        .addComponent(jTextFieldPesqCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextFieldPesqCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelMargemPesq2)
+                            .addComponent(jTextFieldPesquisaCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabelMargemPesq2)
-                        .addComponent(jTextFieldPesquisaCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabelMargemPesq)
-                        .addComponent(jTextFieldPesqDtNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jtxtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3))
+                    .addComponent(jLabelEstoquePesq, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("CLIENTE", jPanel1);
@@ -509,51 +548,41 @@ public class JanelaCliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonPesqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesqActionPerformed
-        filtrarTabela(jTextFieldNomePesq.getText());
-    }//GEN-LAST:event_jButtonPesqActionPerformed
+    private void jtbClientesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtbClientesKeyPressed
 
-    private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
-        try {
-            salvar(this.editar);
-        } catch (ParseException ex) {
-            Logger.getLogger(JanelaCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    }//GEN-LAST:event_jtbClientesKeyPressed
+
+    private void jtbClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbClientesMouseClicked
+        tableaValue();
+    }//GEN-LAST:event_jtbClientesMouseClicked
+
+    private void jtxtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtBuscarKeyReleased
+        filtrarTabela(jtxtBuscar.getText());
+    }//GEN-LAST:event_jtxtBuscarKeyReleased
+
+    private void jtbClientesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtbClientesKeyReleased
+        tableaValue();
+    }//GEN-LAST:event_jtbClientesKeyReleased
+
+    private void jbtnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnNovoActionPerformed
+        idSelecionado = 0;
         this.editar = false;
-    }//GEN-LAST:event_jButtonSalvarActionPerformed
+        jbtnNovo.setEnabled(false);
+        jbtnSalvar.setEnabled(true);
+        jbtnCancelar.setEnabled(true);
+        
+        jTextFieldNomePesq.setEnabled(true);
+        jTextFieldEndPesq.setEnabled(true);
+        jTextFieldNumPesq.setEnabled(true);
+        jTextFieldPesqBairro.setEnabled(true);
+        jTextFieldPesqCPF.setEnabled(true);
+        jTextFieldPesqCidade.setEnabled(true);
+        jTextFieldPesqDtNasc.setEnabled(true);
+        jTextFieldPesqEstado.setEnabled(true);
+        jTextFieldPesqRG.setEnabled(true);
+        jTextFieldPesquisaCEP.setEnabled(true);
 
-    private void jButtonDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeletarActionPerformed
-        int option = JOptionPane.showConfirmDialog(rootPane, "Tem certeza que deseja deletar?");
-         if (option != 0) {
-            return;
-        }
-
-        Cliente cliente = new Cliente();
-        cliente.setId((int) idSelecionado);
-        boolean result = true;
-
-        try {
-            controllerCliente.Excluir(cliente);
-            JOptionPane.showMessageDialog(rootPane, "Cliente Deletado com Sucesso!");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(rootPane, ex);
-            result = false;
-        }
-          if (result) {
-            this.idSelecionado = 0;
-            
-        jTextFieldIDPesq.setEnabled(true);
-        jTextFieldEndPesq.setEnabled(false);
-        jTextFieldNomePesq.setEnabled(false);
-        jTextFieldNumPesq.setEnabled(false);
-        jTextFieldPesqBairro.setEnabled(false);
-        jTextFieldPesqCPF.setEnabled(false);
-        jTextFieldPesqCidade.setEnabled(false);
-        jTextFieldPesqDtNasc.setEnabled(false);
-        jTextFieldPesqEstado.setEnabled(false);
-        jTextFieldPesqRG.setEnabled(false);
-        jTextFieldPesquisaCEP.setEnabled(false);
-         
+        jTextFieldIDPesq.setText("");
         jTextFieldEndPesq.setText("");
         jTextFieldNomePesq.setText("");
         jTextFieldNumPesq.setText("");
@@ -565,42 +594,105 @@ public class JanelaCliente extends javax.swing.JFrame {
         jTextFieldPesqRG.setText("");
         jTextFieldPesquisaCEP.setText("");
 
+
+    }//GEN-LAST:event_jbtnNovoActionPerformed
+
+    private void jbtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSalvarActionPerformed
+        try {
+            salvar(this.editar);
+        } catch (ParseException ex) {
+            Logger.getLogger(JanelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.editar = false;
+    }//GEN-LAST:event_jbtnSalvarActionPerformed
+
+    private void jbtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEditarActionPerformed
+        this.editar = true;
+        jbtnNovo.setEnabled(false);
+        jbtnEditar.setEnabled(false);
+        jbtnExcluir.setEnabled(false);
+        jbtnSalvar.setEnabled(true);
+        jbtnCancelar.setEnabled(true);
+
+        jtbClientes.setEnabled(true);
+
+        jTextFieldNomePesq.setEnabled(true);
+        jTextFieldEndPesq.setEnabled(true);
+        jTextFieldNumPesq.setEnabled(true);
+        jTextFieldPesqBairro.setEnabled(true);
+        jTextFieldPesqCPF.setEnabled(true);
+        jTextFieldPesqCidade.setEnabled(true);
+        jTextFieldPesqDtNasc.setEnabled(true);
+        jTextFieldPesqEstado.setEnabled(true);
+        jTextFieldPesqRG.setEnabled(true);
+        jTextFieldPesquisaCEP.setEnabled(true);
+
+
+    }//GEN-LAST:event_jbtnEditarActionPerformed
+
+    private void jbtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnExcluirActionPerformed
+        int option = JOptionPane.showConfirmDialog(rootPane, "Tem certeza que deseja deletar?");
+
+        if (option != 0) {
+            return;
+        }
+
+        Cliente fornecedor = new Cliente();
+        fornecedor.setId((int) idSelecionado);
+        boolean result = true;
+
+        try {
+            controllerCliente.Excluir(fornecedor);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, ex);
+            result = false;
+        }
+
+        if (result) {
+            this.idSelecionado = 0;
+            jbtnExcluir.setEnabled(false);
+
+            jtbClientes.setEnabled(true);
+
+            jTextFieldEndPesq.setEnabled(false);
+            jTextFieldNomePesq.setEnabled(false);
+            jTextFieldNumPesq.setEnabled(false);
+            jTextFieldPesqBairro.setEnabled(false);
+            jTextFieldPesqCPF.setEnabled(false);
+            jTextFieldPesqCidade.setEnabled(false);
+            jTextFieldPesqDtNasc.setEnabled(false);
+            jTextFieldPesqEstado.setEnabled(false);
+            jTextFieldPesqRG.setEnabled(false);
+            jTextFieldPesquisaCEP.setEnabled(false);
+
+            jTextFieldEndPesq.setText("");
+            jTextFieldNomePesq.setText("");
+            jTextFieldNumPesq.setText("");
+            jTextFieldPesqBairro.setText("");
+            jTextFieldPesqCPF.setText("");
+            jTextFieldPesqCidade.setText("");
+            jTextFieldPesqDtNasc.setText("");
+            jTextFieldPesqEstado.setText("");
+            jTextFieldPesqRG.setText("");
+            jTextFieldPesquisaCEP.setText("");
+
             load();
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Erro ao Apagar");
+            JOptionPane.showMessageDialog(rootPane, "Erro ao salvar");
         }
-          
-    }//GEN-LAST:event_jButtonDeletarActionPerformed
+    }//GEN-LAST:event_jbtnExcluirActionPerformed
 
-    private void jtbClientesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtbClientesKeyPressed
-        tableaValue();
-    }//GEN-LAST:event_jtbClientesKeyPressed
-
-    private void jtbClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbClientesMouseClicked
-       tableaValue();
-    }//GEN-LAST:event_jtbClientesMouseClicked
-
-    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
-        // TODO add your handling code here:
-        this.editar = true;
-        jTextFieldIDPesq.setEnabled(true);
-        jTextFieldEndPesq.setEnabled(false);
-        jTextFieldNomePesq.setEnabled(false);
-        jTextFieldNumPesq.setEnabled(false);
-        jTextFieldPesqBairro.setEnabled(false);
-        jTextFieldPesqCPF.setEnabled(false);
-        jTextFieldPesqCidade.setEnabled(false);
-        jTextFieldPesqDtNasc.setEnabled(false);
-        jTextFieldPesqEstado.setEnabled(false);
-        jTextFieldPesqRG.setEnabled(false);
-        jTextFieldPesquisaCEP.setEnabled(false);
-    }//GEN-LAST:event_jButtonEditarActionPerformed
-
-    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
-        // TODO add your handling code here:
+    private void jbtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelarActionPerformed
         this.editar = false;
-        jTextFieldIDPesq.setEnabled(false);
-        jTextFieldEndPesq.setEnabled(false);
+        jbtnNovo.setEnabled(true);
+        jbtnEditar.setEnabled(false);
+        jbtnExcluir.setEnabled(false);
+        jbtnSalvar.setEnabled(false);
+        jbtnCancelar.setEnabled(false);
+
+        jtbClientes.setEnabled(true);
+
+        jTextFieldEndPesq.setEditable(false);
         jTextFieldNomePesq.setEnabled(false);
         jTextFieldNumPesq.setEnabled(false);
         jTextFieldPesqBairro.setEnabled(false);
@@ -610,8 +702,8 @@ public class JanelaCliente extends javax.swing.JFrame {
         jTextFieldPesqEstado.setEnabled(false);
         jTextFieldPesqRG.setEnabled(false);
         jTextFieldPesquisaCEP.setEnabled(false);
-        
-    }//GEN-LAST:event_jButtonCancelarActionPerformed
+
+    }//GEN-LAST:event_jbtnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -655,13 +747,9 @@ public class JanelaCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonCancelar;
-    private javax.swing.JButton jButtonDeletar;
-    private javax.swing.JButton jButtonEditar;
-    private javax.swing.JButton jButtonPesq;
-    private javax.swing.JButton jButtonSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelCodBarrasPesq;
     private javax.swing.JLabel jLabelCompraPesq;
     private javax.swing.JLabel jLabelCustoPesq;
@@ -688,6 +776,12 @@ public class JanelaCliente extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldPesqEstado;
     private javax.swing.JTextField jTextFieldPesqRG;
     private javax.swing.JTextField jTextFieldPesquisaCEP;
+    private javax.swing.JButton jbtnCancelar;
+    private javax.swing.JButton jbtnEditar;
+    private javax.swing.JButton jbtnExcluir;
+    private javax.swing.JButton jbtnNovo;
+    private javax.swing.JButton jbtnSalvar;
     private javax.swing.JTable jtbClientes;
+    private javax.swing.JTextField jtxtBuscar;
     // End of variables declaration//GEN-END:variables
 }
