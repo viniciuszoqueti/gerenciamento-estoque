@@ -32,29 +32,29 @@ public class FrmCompra extends javax.swing.JFrame {
     private ControladorCompra controlador;
     private DecimalFormat formatadorValor;
     private DecimalFormat formatadorDecimal;
-    
+
     /**
      * Creates new form FrmCompra
      */
     public FrmCompra() {
         initComponents();
-        
+
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
-        
+
         formatadorData = new SimpleDateFormat("dd/MM/yyyy");
         formatadorValor = new DecimalFormat();
         formatadorDecimal = new DecimalFormat();
-        
+
         this.controlador = new ControladorCompra();
-        
+
         this.defineRenderers();
         this.limpaTabela();
-        
+
     }
 
     private void defineRenderers() {
-        
+
         DefaultTableCellRenderer rendererCentro = new DefaultTableCellRenderer();
         rendererCentro.setHorizontalAlignment(SwingConstants.CENTER);
         DefaultTableCellRenderer rendererDireita = new DefaultTableCellRenderer();
@@ -68,58 +68,60 @@ public class FrmCompra extends javax.swing.JFrame {
         modeloDaColuna.getColumn(1).setCellRenderer(rendererEsquerda);
         modeloDaColuna.getColumn(2).setCellRenderer(rendererDireita);
         modeloDaColuna.getColumn(3).setCellRenderer(rendererDireita);
-        
+
         this.atualizaTela();
-        
+
     }
+
     private void limpaTabela() {
         while (((DefaultTableModel) this.tblProdutos.getModel()).getRowCount() > 0) {
             ((DefaultTableModel) this.tblProdutos.getModel()).removeRow(0);
         }
     }
-    
-    private void atualizaTela(){
-            
-        this.edtData.setText( getDataFormatada( this.controlador.getCompra().getDatCompra() ) );        
+
+    private void atualizaTela() {
+
+        this.edtData.setText(getDataFormatada(this.controlador.getCompra().getDatCompra()));
         this.edtNota.setText(this.controlador.getCompra().getNota());
-        if (this.controlador.getCompra().getFornecedor() != null){
+        if (this.controlador.getCompra().getFornecedor() != null) {
             this.edtCodFor.setText(Integer.toString(this.controlador.getCompra().getFornecedor().getId()));
             this.edtNomeFor.setText(this.controlador.getCompra().getFornecedor().getRazao());
-        }else{
+        } else {
             this.edtCodFor.setText("");
             this.edtNomeFor.setText("");
         }
-        
 
         this.preencheTabela();
 
         this.edtNota.requestFocusInWindow();
-            
+
     }
+
     /**
      * Retorna a data no formato dia/mes/ano
+     *
      * @return data String
      */
-    private String getDataFormatada(Calendar data){
-        if(data == null)
+    private String getDataFormatada(Calendar data) {
+        if (data == null) {
             return "";
+        }
         return formatadorData.format(data.getTime());
     }
-    
-    private void preencheTabela(){
+
+    private void preencheTabela() {
         this.limpaTabela();
         for (CompraItem item : this.controlador.getCompra().getItens()) {
             ((DefaultTableModel) this.tblProdutos.getModel()).addRow(
                     new Object[]{
                         item.getProduto().getId(),
                         item.getProduto().getNome(),
-                        getDecimalFormatadoDouble( item.getQuantidade() ),
-                        getValorCifrado(item.getValor()),                        
-                    });
+                        getDecimalFormatadoDouble(item.getQuantidade()),
+                        getValorCifrado(item.getValor()),});
         }
-    
+
     }
-    
+
     private String getDecimalFormatadoDouble(double valor) {
 
         formatadorDecimal.applyPattern("############.00;(############.00)");
@@ -129,7 +131,7 @@ public class FrmCompra extends javax.swing.JFrame {
         }
         return formatadorDecimal.format(valor);
     }
-    
+
     private String getValorCifrado(double valor) {
 
         formatadorDecimal.applyPattern("############.00;(############.00)");
@@ -139,21 +141,22 @@ public class FrmCompra extends javax.swing.JFrame {
         }
         return "R$ " + formatadorDecimal.format(valor);
     }
-    
-    private void atualizaItemTela(){
-        if (this.controlador.getItem().getProduto() != null ){
-            this.edtCodProd.setText( Integer.toString(this.controlador.getItem().getProduto().getId()) );
+
+    private void atualizaItemTela() {
+        if (this.controlador.getItem().getProduto() != null) {
+            this.edtCodProd.setText(Integer.toString(this.controlador.getItem().getProduto().getId()));
             this.edtDescricao.setText(this.controlador.getItem().getProduto().getNome());
             this.edtQtde.setText(getDecimalFormatadoDouble(this.controlador.getItem().getQuantidade()));
             this.edtValor.setText(getValorCifrado(this.controlador.getItem().getValor()));
-        }else{
-            this.edtCodProd.setText( "" );
+        } else {
+            this.edtCodProd.setText("");
             this.edtDescricao.setText("");
             this.edtQtde.setText("");
             this.edtValor.setText("");
         }
-        
+
     }
+
     /**
      * This method is called rom within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -531,7 +534,7 @@ public class FrmCompra extends javax.swing.JFrame {
     private void botaoPesquisarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPesquisarCompraActionPerformed
         FrmPesquisaCompra frm = new FrmPesquisaCompra(this);
         frm.setVisible(true);
-        if (frm.getCompraSelecionada() != null){
+        if (frm.getCompraSelecionada() != null) {
             this.controlador.setCompra(frm.getCompraSelecionada());
             this.atualizaTela();
         }
@@ -541,23 +544,23 @@ public class FrmCompra extends javax.swing.JFrame {
     private void edtNotaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtNotaKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            
-            if (this.edtNota.getText().equals("")){
+
+            if (this.edtNota.getText().equals("")) {
                 JOptionPane.showMessageDialog(this, "É obrigatório informar o numero da nota fiscal", "Atençao", JOptionPane.INFORMATION_MESSAGE);
                 this.edtNota.requestFocusInWindow();
-            }else{
-                
+            } else {
+
                 try {
-                    this.controlador.getCompraPorNotaFiscal( this.edtNota.getText() );
+                    this.controlador.getCompraPorNotaFiscal(this.edtNota.getText());
                     this.atualizaTela();
                     this.edtCodFor.requestFocusInWindow();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
                     this.edtNota.requestFocusInWindow();
                 }
-                
+
             }
-            
+
         }
 
     }//GEN-LAST:event_edtNotaKeyPressed
@@ -565,26 +568,26 @@ public class FrmCompra extends javax.swing.JFrame {
     private void edtCodForKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtCodForKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            
-            if ( !this.edtCodFor.getText().equals("") ){
-                
+
+            if (!this.edtCodFor.getText().equals("")) {
+
                 try {
-                    this.controlador.buscaFornecedor( this.edtCodFor.getText());
-                    
+                    this.controlador.buscaFornecedor(this.edtCodFor.getText());
+
                     this.atualizaTela();
-                    
+
                     this.edtCodProd.requestFocusInWindow();
-                    
+
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
                     this.edtCodFor.requestFocusInWindow();
                 }
-                
-            }else{
+
+            } else {
                 JOptionPane.showMessageDialog(this, "É necessário informar o fonecedor", "Atençao", JOptionPane.INFORMATION_MESSAGE);
                 this.edtCodFor.requestFocusInWindow();
             }
-            
+
         }
 
     }//GEN-LAST:event_edtCodForKeyPressed
@@ -592,58 +595,58 @@ public class FrmCompra extends javax.swing.JFrame {
     private void edtCodProdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtCodProdKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            
-            if ( this.edtCodProd.getText().equals("")){
-                
+
+            if (this.edtCodProd.getText().equals("")) {
+
                 JOptionPane.showMessageDialog(this, "É necessário informar o produto", "Atençao", JOptionPane.INFORMATION_MESSAGE);
-                this.edtCodProd.requestFocusInWindow(); 
-                
-            }else{
-                
+                this.edtCodProd.requestFocusInWindow();
+
+            } else {
+
                 try {
-                    
-                    this.controlador.buscaProduto( this.edtCodProd.getText() );
-                    
+
+                    this.controlador.buscaProduto(this.edtCodProd.getText());
+
                     this.atualizaItemTela();
-                    
+
                     this.edtQtde.requestFocusInWindow();
-                    
+
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
-                    this.edtCodProd.requestFocusInWindow(); 
+                    this.edtCodProd.requestFocusInWindow();
                 }
-                
+
             }
-            
+
         }
     }//GEN-LAST:event_edtCodProdKeyPressed
 
     private void edtQtdeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtQtdeKeyPressed
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            
+
             try {
-                this.controlador.getItem().setQuantidade( Double.parseDouble( this.edtQtde.getText()));
+                this.controlador.getItem().setQuantidade(Double.parseDouble(this.edtQtde.getText()));
                 this.edtValor.requestFocusInWindow();
             } catch (ValorInvalidoException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
                 this.edtQtde.requestFocusInWindow();
             }
-            
+
         }
     }//GEN-LAST:event_edtQtdeKeyPressed
 
     private void edtValorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtValorKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            
+
             try {
-                this.controlador.getItem().setValor( Double.parseDouble( Formatador.retiraMascaraValor(this.edtValor.getText())));
+                this.controlador.getItem().setValor(Double.parseDouble(Formatador.retiraMascaraValor(this.edtValor.getText())));
                 this.botaoAdicionarProduto.requestFocusInWindow();
             } catch (ValorInvalidoException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
                 this.edtValor.requestFocusInWindow();
             }
-            
+
         }
     }//GEN-LAST:event_edtValorKeyPressed
 
@@ -656,17 +659,17 @@ public class FrmCompra extends javax.swing.JFrame {
         } catch (ValorInvalidoException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
         }
-       
+
     }//GEN-LAST:event_botaoAdicionarProdutoActionPerformed
 
     private void tblProdutosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblProdutosKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_DELETE){
-            if ( this.tblProdutos.getSelectedRow() < 0){
+        if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+            if (this.tblProdutos.getSelectedRow() < 0) {
 
                 JOptionPane.showMessageDialog(this, "É necessário selecionar o item a sem excluido!", "Atençao", JOptionPane.INFORMATION_MESSAGE);
                 this.tblProdutos.requestFocusInWindow();
 
-            }else{
+            } else {
 
                 try {
                     this.controlador.removeItem(this.tblProdutos.getSelectedRow());
@@ -688,9 +691,9 @@ public class FrmCompra extends javax.swing.JFrame {
     private void botaoSalverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalverActionPerformed
         try {
             this.controlador.salvar();
-            
+
             JOptionPane.showMessageDialog(this, "Compra salva com sucesso!", "Atençao", JOptionPane.INFORMATION_MESSAGE);
-            
+
             this.atualizaTela();
             this.atualizaItemTela();
             this.edtData.requestFocusInWindow();
@@ -707,13 +710,13 @@ public class FrmCompra extends javax.swing.JFrame {
     private void botaoExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoExcluirActionPerformed
         try {
             this.controlador.excluiCompra();
-            
+
             JOptionPane.showMessageDialog(this, "Compra excluida com sucesso!", "Atençao", JOptionPane.INFORMATION_MESSAGE);
-            
+
             this.atualizaTela();
             this.atualizaItemTela();
             this.edtNota.requestFocusInWindow();
-            
+
         } catch (DBErrorException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Atençao", JOptionPane.INFORMATION_MESSAGE);
         } catch (InstantiationException ex) {
@@ -721,13 +724,13 @@ public class FrmCompra extends javax.swing.JFrame {
         } catch (IllegalAccessException ex) {
             Logger.getLogger(FrmCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
-                
+
     }//GEN-LAST:event_botaoExcluirActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         FrmPesquisaFornecedor frm = new FrmPesquisaFornecedor(this);
         frm.setVisible(true);
-        if (frm.getFornecedorSelecionado() != null){
+        if (frm.getFornecedorSelecionado() != null) {
             try {
                 this.controlador.getCompra().setFornecedor(frm.getFornecedorSelecionado());
                 this.atualizaTela();
@@ -742,7 +745,7 @@ public class FrmCompra extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         FrmPesquisaProdutos frm = new FrmPesquisaProdutos(this);
         frm.setVisible(true);
-        if (frm.getProdutoSelecionado() != null){
+        if (frm.getProdutoSelecionado() != null) {
             try {
                 this.controlador.getItem().setProduto(frm.getProdutoSelecionado());
                 this.atualizaItemTela();
@@ -759,7 +762,7 @@ public class FrmCompra extends javax.swing.JFrame {
         this.atualizaTela();
         this.atualizaItemTela();
         this.edtNota.requestFocusInWindow();
-        
+
     }//GEN-LAST:event_botaoExcluir1ActionPerformed
 
     private void edtQtdeFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_edtQtdeFocusGained
@@ -800,9 +803,13 @@ public class FrmCompra extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmCompra().setVisible(true);
+                FrmCompra frmCompra = new FrmCompra();
+                frmCompra.setVisible(true);
+                TelaImportacoes telaImportacoes = new TelaImportacoes(frmCompra, true);
+                telaImportacoes.show();
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

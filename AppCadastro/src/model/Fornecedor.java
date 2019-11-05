@@ -47,6 +47,8 @@ public class Fornecedor {
         if (id > 0) {
             conteudo.append(id).append(";");
             acao = "ALTERAR@ID=" + id;
+        } else {
+            conteudo.append("0").append(";");
         }
 
         conteudo.append(razao).append(";");
