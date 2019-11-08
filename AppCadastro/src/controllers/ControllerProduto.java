@@ -39,7 +39,7 @@ public class ControllerProduto {
 
         try {
             dao.update(produto);
-            produto.criaNovo();
+            produto.criaNovo("ALTERAR");
 
         } catch (SQLException ex) {
             throw ex;
@@ -49,8 +49,9 @@ public class ControllerProduto {
     public void Adicionar(Produto produto) throws SQLException {
 
         try {
-            dao.insert(produto);
-            produto.criaNovo();
+            int novoId = dao.insert(produto);
+            produto.setId(novoId);
+            produto.criaNovo("INSERIR");
 
         } catch (SQLException ex) {
             throw ex;

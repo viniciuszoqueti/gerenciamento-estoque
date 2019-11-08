@@ -18,6 +18,7 @@ import model.Fornecedor;
  * @author 23034-2
  */
 public class FornecedorDao implements DAO<Fornecedor> {
+
     Connection conexao;
 
     public FornecedorDao() throws InstantiationException, IllegalAccessException {
@@ -25,12 +26,14 @@ public class FornecedorDao implements DAO<Fornecedor> {
     }
 
     @Override
-    public void insert(Fornecedor parm) throws SQLException {
+    public int insert(Fornecedor parm) throws SQLException {
         PreparedStatement ps = null;
-
+        int novoId = 0;
         try {
 
             String sql = "INSERT INTO `fornecedor` (`razao`,`fantasia`,`cpf_cnpj`,`rg_inscr`,`telefone`) VALUES (?, ?, ?, ?, ?)";
+
+            conexao.setAutoCommit(false);
 
             ps = conexao.prepareStatement(sql);
             ps.setString(1, parm.getRazao());
@@ -41,6 +44,15 @@ public class FornecedorDao implements DAO<Fornecedor> {
 
             ps.executeUpdate();
 
+            ResultSet resultSet = ps.executeQuery("SELECT LAST_INSERT_ID()");
+
+            if (resultSet.next()) {
+                novoId = resultSet.getInt("LAST_INSERT_ID()");
+            }
+
+            conexao.commit();
+            conexao.setAutoCommit(true);
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } finally {
@@ -50,6 +62,7 @@ public class FornecedorDao implements DAO<Fornecedor> {
                 System.out.println(ex2.getMessage());
             }
         }
+        return novoId;
     }
 
     @Override
@@ -105,7 +118,6 @@ public class FornecedorDao implements DAO<Fornecedor> {
         //Conexão com o bando de dados
 
     }
-
 
     @Override
     public List selectAll() throws SQLException {

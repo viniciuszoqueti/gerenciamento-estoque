@@ -51,7 +51,7 @@ public class Marca {
 
     public void criaDelete() {
         StringBuilder conteudo = new StringBuilder();
-        String acao = "DELETAR@ID" + id;
+        String acao = "DELETAR@ID=" + id;
 
         conteudo.append(id).append(";");
         conteudo.append(marca);

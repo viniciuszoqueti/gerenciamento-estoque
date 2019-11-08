@@ -8,12 +8,12 @@ package entradas.view;
 import entradas.controller.ControladorFornecedor;
 import entradas.model.Fornecedor;
 import entradas.model.ValorInvalidoException;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -34,14 +34,13 @@ public class TelaImportacoes extends javax.swing.JDialog {
         jpbImportacao.setMaximum(100);
     }
 
-    private void lerArquivos(String acao) throws ValorInvalidoException {
+    private void lerArquivos(String acao) throws ValorInvalidoException, FileNotFoundException, IOException {
 
         File arquivosDiretorio = new File(jtxtCaminho.getText());
         File afile[] = arquivosDiretorio.listFiles();
         int i = 0;
         for (int j = afile.length; i < j; i++) {
 
-            Properties p = new Properties();
             File arquivo = afile[i];
             String acaoObj = arquivo.getName().substring(0, arquivo.getName().indexOf("@"));
 
@@ -52,15 +51,17 @@ public class TelaImportacoes extends javax.swing.JDialog {
                     System.out.println(arquivo.getName());
                     FileInputStream file = null;
                     file = new FileInputStream(arquivo);
-                    p.load(file);
 
                 } catch (FileNotFoundException ex) {
                     System.out.println(ex);
                 } catch (IOException ex) {
                     System.out.println(ex);
                 }
-
-                String texto = p.toString().substring(1, p.toString().length() - 2);
+                String caminhoArquivo = arquivo.toString();
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(caminhoArquivo));
+                String texto = bufferedReader.readLine();
+                texto = texto.substring(1, texto.length() - 2);
+                
                 String[] itens = texto.split(";");
 
                 String nameObj = arquivo.getName().substring(
@@ -260,6 +261,10 @@ public class TelaImportacoes extends javax.swing.JDialog {
             lerArquivos("DELETAR");
             this.dispose();
         } catch (ValorInvalidoException ex) {
+            System.out.println(ex);
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
             System.out.println(ex);
         }
 

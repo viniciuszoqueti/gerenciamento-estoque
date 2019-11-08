@@ -27,7 +27,7 @@ public class ControllerCliente {
 
         try {
             dao.delete(cliente.getId());
-            cliente.criaDelete();
+          //  cliente.criaDelete();
 
         } catch (SQLException ex) {
             throw ex;
@@ -39,7 +39,7 @@ public class ControllerCliente {
 
         try {
             dao.update(cliente);
-            cliente.criaNovo();
+         //   cliente.criaNovo();
 
         } catch (SQLException ex) {
             throw ex;
@@ -50,7 +50,8 @@ public class ControllerCliente {
 
         try {
             dao.insert(cliente);
-            cliente.criaNovo();
+
+           // cliente.criaNovo();
 
         } catch (SQLException ex) {
             throw ex;

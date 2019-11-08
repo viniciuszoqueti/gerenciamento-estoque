@@ -168,6 +168,8 @@ public class FornecedorDAO {
             ps.setInt(8, parm.getId());
 
             ps.executeUpdate();
+
+       
             Conexao.getConexao().commit();
 
         } catch (SQLException ex) {
@@ -179,6 +181,8 @@ public class FornecedorDAO {
                 System.out.println(ex2.getMessage());
             }
         }
+
+
     }
 
     public void update(Fornecedor parm) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {

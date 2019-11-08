@@ -153,4 +153,97 @@ public class ProdutoDAO {
         return lista;
     }
     
+    
+    public void insert(Produto parm) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        PreparedStatement ps = null;
+
+        try {
+
+            String sql = "INSERT INTO `fornecedores` (razao, nome_fantasia, telefone, celular, nome_contato, cnpj, inscricao, id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+            ps = Conexao.getConexao().prepareStatement(sql);
+
+            ps.setString(1, parm.getRazao());
+            ps.setString(2, parm.getFantasia());
+            ps.setString(3, parm.getTelefone());
+            ps.setString(4, "(11) 1 1111-111");
+            ps.setString(5, parm.getFantasia());
+            ps.setString(6, parm.getCnpj());
+            ps.setString(7, parm.getInscricao());
+            ps.setInt(8, parm.getId());
+
+            ps.executeUpdate();
+
+
+            Conexao.getConexao().commit();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex2) {
+                System.out.println(ex2.getMessage());
+            }
+        }
+
+    }
+
+    public void update(Produto parm) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+
+        PreparedStatement ps = null;
+
+        try {
+
+            String sql = "UPDATE `fornecedores` SET `razao` = ?,`nome_fantasia`= ?, telefone= ?, celular= ?, nome_contato= ?, `cnpj`= ?, inscricao WHERE `id` = ?";
+
+            ps = Conexao.getConexao().prepareStatement(sql);
+
+            ps.setString(1, parm.getRazao());
+            ps.setString(2, parm.getFantasia());
+            ps.setString(3, parm.getTelefone());
+            ps.setString(4, "(11) 1 1111-111");
+            ps.setString(5, parm.getFantasia());
+            ps.setString(6, parm.getCnpj());
+            ps.setString(7, parm.getInscricao());
+            ps.setInt(8, parm.getId());
+
+            ps.executeUpdate();
+            Conexao.getConexao().commit();
+
+        } catch (SQLException ex) {
+            System.out.println("Erro: " + ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                System.out.println("Erro: " + ex.getMessage());
+            }
+        }
+
+    }
+
+    public void delete(int id) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        PreparedStatement ps = null;
+        try {
+
+            String sql = "DELETE FROM fornecedores WHERE id = ?";
+            ps = Conexao.getConexao().prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            Conexao.getConexao().commit();
+
+        } catch (SQLException ex) {
+            System.out.println("Erro: " + ex.getMessage());
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                System.out.println("Erro: " + ex.getMessage());
+            }
+        }
+        //Conexão com o bando de dados
+
+    }
+    
 }

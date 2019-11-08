@@ -17,16 +17,17 @@ import model.Cliente;
  *
  * @author 23034-2
  */
-public class ClienteDAO implements DAO<Cliente>{
+public class ClienteDAO implements DAO<Cliente> {
+
     Connection conexao;
 
     public ClienteDAO() throws InstantiationException, IllegalAccessException {
         this.conexao = ConnectionFactory.getConnection();
     }
-    
+
     @Override
-    public void insert(Cliente parm) throws SQLException {
-       PreparedStatement ps = null;
+    public int insert(Cliente parm) throws SQLException {
+        PreparedStatement ps = null;
 
         try {
 
@@ -54,6 +55,8 @@ public class ClienteDAO implements DAO<Cliente>{
                 System.out.println(ex2.getMessage());
             }
         }
+
+        return 0;
     }
 
     @Override
@@ -90,7 +93,7 @@ public class ClienteDAO implements DAO<Cliente>{
 
     @Override
     public void delete(int id) throws SQLException {
-       PreparedStatement ps = null;
+        PreparedStatement ps = null;
         try {
 
             String sql = "DELETE FROM clientes WHERE id = ?";
@@ -109,33 +112,32 @@ public class ClienteDAO implements DAO<Cliente>{
         }
     }
 
-
     @Override
     public List selectAll() throws SQLException {
         PreparedStatement ps = null;
         String sql = "select * from clientes";
         List list = new ArrayList();
-       
-        try{
+
+        try {
             ps = conexao.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                 Cliente c = new Cliente();
-            c.setNome(rs.getString("nome"));
-            c.setDat_nascimento(rs.getDate("dat_nascimento"));
-            c.setCpf(rs.getString("cpf"));
-            c.setRg(rs.getString("rg"));
-            c.setEndereco(rs.getString("endereco"));
-            c.setNumero(rs.getString("numero"));
-            c.setBairro(rs.getString("bairro"));
-            c.setCidade(rs.getString("cidade"));
-            c.setEstado(rs.getString("estado"));
-            c.setCep(rs.getString("cep"));
-            c.setId(rs.getInt("id"));
-            list.add(c);
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setNome(rs.getString("nome"));
+                c.setDat_nascimento(rs.getDate("dat_nascimento"));
+                c.setCpf(rs.getString("cpf"));
+                c.setRg(rs.getString("rg"));
+                c.setEndereco(rs.getString("endereco"));
+                c.setNumero(rs.getString("numero"));
+                c.setBairro(rs.getString("bairro"));
+                c.setCidade(rs.getString("cidade"));
+                c.setEstado(rs.getString("estado"));
+                c.setCep(rs.getString("cep"));
+                c.setId(rs.getInt("id"));
+                list.add(c);
             }
-             
-         }catch (SQLException ex) {
+
+        } catch (SQLException ex) {
             System.out.println("Erro: " + ex.getMessage());
         } finally {
             try {
@@ -146,5 +148,5 @@ public class ClienteDAO implements DAO<Cliente>{
         }
         return list;
     }
-    
+
 }

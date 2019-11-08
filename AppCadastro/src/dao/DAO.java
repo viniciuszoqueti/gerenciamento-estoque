@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface DAO<T> {
     
-    public abstract void insert(T parm)throws SQLException;
+    public abstract int insert(T parm)throws SQLException;
     public abstract void update(T parm)throws SQLException;
     public abstract void delete(int id)throws SQLException;
     public abstract List selectAll()throws SQLException;

@@ -30,14 +30,14 @@ public class Produto {
         this.fornecedor = fornecedor;
     }
 
-    public void criaNovo() {
+    public void criaNovo(String acaoParam) {
 
         StringBuilder conteudo = new StringBuilder();
-        String acao = "INSERIR@ID_ARQUIVO=" + Instant.now().toEpochMilli();
+        String acao = acaoParam + "@ID_ARQUIVO=" + Instant.now().toEpochMilli();
 
         if (id > 0) {
             conteudo.append(id).append(";");
-            acao = "ALTERAR@ID=" + id;
+            acao = acaoParam + "@ID=" + id;
         } else {
             conteudo.append("0").append(";");
         }
@@ -56,17 +56,13 @@ public class Produto {
 
     public void criaDelete() {
         StringBuilder conteudo = new StringBuilder();
-        String acao = "DELETAR@ID" + id;
+        String acao = "DELETAR@ID=" + id;
 
         conteudo.append(id).append(";");
         conteudo.append(nome).append(";");
         conteudo.append(estoque).append(";");
         conteudo.append(precoVenda).append(";");
-        conteudo.append(precoCusto).append(";");
-        conteudo.append(dataCompra).append(";");
-        conteudo.append(dataVenda).append(";");
-        conteudo.append(marca.getId()).append(";");
-        conteudo.append(fornecedor.getId());
+        conteudo.append(precoCusto);
 
         GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
     }

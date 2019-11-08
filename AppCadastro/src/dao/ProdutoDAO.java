@@ -21,10 +21,11 @@ public class ProdutoDAO implements DAO<Produto> {
     }
 
     @Override
-    public void insert(Produto parm) throws SQLException {
+    public int insert(Produto parm) throws SQLException {
         PreparedStatement ps = null;
+        int novoId = 0;
         try {
-
+            conexao.setAutoCommit(false);
             String sql = "INSERT INTO produto (nome, estoque, preco_venda, preco_custo, dat_compra, dat_venda, marca_id, fornecedor_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
             ps = conexao.prepareStatement(sql);
             ps.setString(1, parm.getNome());
@@ -37,6 +38,15 @@ public class ProdutoDAO implements DAO<Produto> {
             ps.setInt(8, parm.getFornecedor().getId());
 
             ps.executeUpdate();
+            
+            ResultSet resultSet = ps.executeQuery("SELECT LAST_INSERT_ID()");
+
+            if (resultSet.next()) {
+                novoId = resultSet.getInt("LAST_INSERT_ID()");
+            }
+
+            conexao.commit();
+            conexao.setAutoCommit(true);
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -47,6 +57,7 @@ public class ProdutoDAO implements DAO<Produto> {
                 System.out.println(ex2.getMessage());
             }
         }
+        return novoId;
     }
 
     @Override

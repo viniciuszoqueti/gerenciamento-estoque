@@ -29,7 +29,7 @@ public class MarcaDAO implements DAO<Marca> {
     }
 
     @Override
-    public void insert(Marca marca) {
+    public int insert(Marca marca) {
 
         PreparedStatement ps = null;
 
@@ -50,6 +50,7 @@ public class MarcaDAO implements DAO<Marca> {
                 System.out.println(ex2.getMessage());
             }
         }
+        return 0;
     }
 
     @Override

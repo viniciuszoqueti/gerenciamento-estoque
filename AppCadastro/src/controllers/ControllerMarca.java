@@ -25,17 +25,17 @@ public class ControllerMarca {
 
     public void Excluir(Marca marca) throws Exception {
         dao.delete(marca.getId());
-        marca.criaDelete();
+        //marca.criaDelete();
     }
 
     public void Editar(Marca marca) throws SQLException {
         dao.update(marca);
-        marca.criaNovo();
+        //  marca.criaNovo();
     }
 
     public void Adicionar(Marca marca) throws SQLException {
         dao.insert(marca);
-        marca.criaNovo();
+        // marca.criaNovo();
     }
 
     public List<Marca> getMarcas() throws SQLException {
