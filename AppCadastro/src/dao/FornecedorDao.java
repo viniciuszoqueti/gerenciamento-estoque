@@ -55,11 +55,13 @@ public class FornecedorDao implements DAO<Fornecedor> {
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+             throw ex;
         } finally {
             try {
                 ps.close();
             } catch (SQLException ex2) {
                 System.out.println(ex2.getMessage());
+                 throw ex2;
             }
         }
         return novoId;
@@ -86,11 +88,13 @@ public class FornecedorDao implements DAO<Fornecedor> {
 
         } catch (SQLException ex) {
             System.out.println("Erro: " + ex.getMessage());
+             throw ex;
         } finally {
             try {
                 ps.close();
             } catch (SQLException ex) {
                 System.out.println("Erro: " + ex.getMessage());
+                 throw ex;
             }
         }
 
@@ -106,13 +110,15 @@ public class FornecedorDao implements DAO<Fornecedor> {
             ps.setInt(1, id);
             ps.executeUpdate();
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
+            throw ex;
         } finally {
             try {
                 ps.close();
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 System.out.println("Erro: " + ex.getMessage());
+                throw ex;
             }
         }
         //Conexão com o bando de dados
@@ -142,11 +148,13 @@ public class FornecedorDao implements DAO<Fornecedor> {
 
         } catch (SQLException ex) {
             System.out.println("Erro: " + ex.getMessage());
+             throw ex;
         } finally {
             try {
                 ps.close();
             } catch (SQLException ex) {
                 System.out.println("Erro: " + ex.getMessage());
+                 throw ex;
             }
         }
         return list;

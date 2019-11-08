@@ -6,7 +6,9 @@
 package entradas.view;
 
 import entradas.controller.ControladorFornecedor;
+import entradas.controller.ControladorProduto;
 import entradas.model.Fornecedor;
+import entradas.model.Produto;
 import entradas.model.ValorInvalidoException;
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,7 +36,7 @@ public class TelaImportacoes extends javax.swing.JDialog {
         jpbImportacao.setMaximum(100);
     }
 
-    private void lerArquivos(String acao) throws ValorInvalidoException, FileNotFoundException, IOException {
+    private void lerArquivos(String acao) {
 
         File arquivosDiretorio = new File(jtxtCaminho.getText());
         File afile[] = arquivosDiretorio.listFiles();
@@ -43,48 +45,108 @@ public class TelaImportacoes extends javax.swing.JDialog {
 
             File arquivo = afile[i];
             String acaoObj = arquivo.getName().substring(0, arquivo.getName().indexOf("@"));
+            FileReader fileReader = null;
+            BufferedReader bufferedReader = null;
 
             if (acaoObj.equals(acao)) {
 
                 try {
 
                     System.out.println(arquivo.getName());
-                    FileInputStream file = null;
-                    file = new FileInputStream(arquivo);
+
+                    String caminhoArquivo = arquivo.toString();
+                    fileReader = new FileReader(caminhoArquivo);
+
+                    bufferedReader = new BufferedReader(fileReader);
+                    String texto = bufferedReader.readLine();
+
+                    String[] itens = texto.split(";");
+
+                    String nameObj = arquivo.getName().substring(
+                            arquivo.getName().indexOf("-") + 1,
+                            arquivo.getName().length() - 4);
+
+                    bufferedReader.close();
+                    fileReader.close();
+
+                    switch (nameObj) {
+                        case "Fornecedor":
+                            try {
+                                acaoFonecedor(itens, acao);
+                                if (arquivo.exists()) {
+
+                                    bufferedReader.close();
+                                    fileReader.close();
+
+                                    if (!arquivo.delete()) {
+                                        System.err.println("O arquivo não pode ser deletado porque está em uso");
+                                    }
+                                } else {
+                                    System.err.println(
+                                            "Erro ao encontrar o arquivo '" + arquivo + "' ('" + arquivo.getAbsolutePath() + "')");
+                                }
+                            } catch (Exception ex) {
+                                System.err.println(ex);
+                            }
+                            break;
+                        case "Produto":
+                            try {
+                                acaoProdutos(itens, acao);
+                                if (arquivo.exists()) {
+
+                                    bufferedReader.close();
+                                    fileReader.close();
+
+                                    if (!arquivo.delete()) {
+                                        System.err.println("O arquivo não pode ser deletado porque está em uso");
+                                    }
+                                } else {
+                                    System.err.println(
+                                            "Erro ao encontrar o arquivo '" + arquivo + "' ('" + arquivo.getAbsolutePath() + "')");
+                                }
+                            } catch (Exception ex) {
+                                System.err.println(ex);
+                            }
+
+                            break;
+                    }
 
                 } catch (FileNotFoundException ex) {
                     System.out.println(ex);
                 } catch (IOException ex) {
                     System.out.println(ex);
+                } finally {
+                    try {
+                        bufferedReader.close();
+                        fileReader.close();
+                    } catch (IOException ex) {
+                        System.out.println(ex);
+                    }
+
                 }
-                String caminhoArquivo = arquivo.toString();
-                BufferedReader bufferedReader = new BufferedReader(new FileReader(caminhoArquivo));
-                String texto = bufferedReader.readLine();
-                texto = texto.substring(1, texto.length() - 2);
-                
-                String[] itens = texto.split(";");
-
-                String nameObj = arquivo.getName().substring(
-                        arquivo.getName().indexOf("-") + 1,
-                        arquivo.getName().length() - 4);
-
-                switch (nameObj) {
-                    case "Fornecedor":
-                        acaoFonecedor(itens, acao);
-                        arquivo.delete();
-                        break;
-                    case "Produto":
-                        acaoProdutos(itens, acao);
-                        arquivo.delete();
-                        break;
-                }
-
             }
+
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ex) {
+                    System.out.println(ex);
+                }
+            }
+
+            if (fileReader != null) {
+                try {
+                    fileReader.close();
+                } catch (IOException ex) {
+                    System.out.println(ex);
+                }
+            }
+
         }
     }
 
-    // FORNECEDOR
-    private void acaoFonecedor(String[] itens, String acao) throws ValorInvalidoException {
+// FORNECEDOR
+    private void acaoFonecedor(String[] itens, String acao) throws ValorInvalidoException, Exception {
 
         Fornecedor fornecedor = new Fornecedor();
         ControladorFornecedor cf = new ControladorFornecedor();
@@ -120,6 +182,7 @@ public class TelaImportacoes extends javax.swing.JDialog {
                     cf.Inserir(fornecedor);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, ex);
+                    throw ex;
                 }
                 break;
             }
@@ -128,6 +191,7 @@ public class TelaImportacoes extends javax.swing.JDialog {
                     cf.Editar(fornecedor);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, ex);
+                    throw ex;
                 }
                 break;
             }
@@ -136,6 +200,7 @@ public class TelaImportacoes extends javax.swing.JDialog {
                     cf.Excluir(fornecedor);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, ex);
+                    throw ex;
                 }
                 break;
             }
@@ -144,11 +209,76 @@ public class TelaImportacoes extends javax.swing.JDialog {
     }
 
     // PRODUTOS
-    private void acaoProdutos(String[] itens, String acao) {
-        /*for (int k = 0; k < itens.length; k++) {
-            String[] cli = itens[k].split("[|]");
-            System.out.println(cli[k]);
-        }*/
+    private void acaoProdutos(String[] itens, String acao) throws ValorInvalidoException, Exception {
+
+        Produto produto = new Produto();
+        ControladorProduto cp = new ControladorProduto();
+
+        for (int i = 0; i < itens.length; i++) {
+            System.out.println(itens[i]);
+
+            switch (i) {
+                case 0:
+                    produto.setId(Integer.parseInt(itens[i]));
+                    break;
+                case 1:
+                    produto.setNome(String.valueOf(itens[i]));
+                    break;
+                case 2:
+                    produto.setEstoque(Integer.parseInt(itens[i]));
+                    break;
+                case 3: {
+                    if (acao.equals("DELETAR")) {
+                        produto.setVenda(1000);
+                    } else {
+                        produto.setVenda(Double.parseDouble(itens[i]));
+                    }
+
+                    break;
+                }
+                case 4:
+                    produto.setCusto(Double.parseDouble(itens[i]));
+                    break;
+                case 5: {
+                    Fornecedor fornecedor = new Fornecedor();
+                    fornecedor.setId(Integer.parseInt(itens[i]));
+                    fornecedor.setRazao(String.valueOf(itens[i]));
+
+                    produto.setFornecedor(fornecedor);
+                }
+            }
+        }
+
+        switch (acao) {
+            case "INSERIR": {
+                try {
+                    cp.Inserir(produto);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex);
+                    throw ex;
+                }
+                break;
+            }
+            case "ALTERAR": {
+                try {
+                    cp.Editar(produto);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex);
+                    throw ex;
+                }
+                break;
+            }
+            case "DELETAR": {
+                try {
+                    cp.Excluir(produto);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex);
+                    throw ex;
+                }
+                break;
+            }
+        }
+
     }
 
     /**
@@ -168,7 +298,7 @@ public class TelaImportacoes extends javax.swing.JDialog {
         jbtnImportar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         jLabel1.setText("Caminho padrão:");
@@ -255,18 +385,10 @@ public class TelaImportacoes extends javax.swing.JDialog {
 
     private void jbtnImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnImportarActionPerformed
 
-        try {
-            lerArquivos("INSERIR");
-            lerArquivos("ALTERAR");
-            lerArquivos("DELETAR");
-            this.dispose();
-        } catch (ValorInvalidoException ex) {
-            System.out.println(ex);
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex);
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
+        lerArquivos("INSERIR");
+        lerArquivos("ALTERAR");
+        lerArquivos("DELETAR");
+        this.dispose();
 
 
     }//GEN-LAST:event_jbtnImportarActionPerformed

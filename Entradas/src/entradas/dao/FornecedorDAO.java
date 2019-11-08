@@ -191,7 +191,7 @@ public class FornecedorDAO {
 
         try {
 
-            String sql = "UPDATE `fornecedores` SET `razao` = ?,`nome_fantasia`= ?, telefone= ?, celular= ?, nome_contato= ?, `cnpj`= ?, inscricao WHERE `id` = ?";
+            String sql = "UPDATE `fornecedores` SET `razao` = ?,`nome_fantasia`= ?, telefone= ?, celular= ?, nome_contato= ?, `cnpj`= ?, inscricao = ? WHERE `id` = ?";
 
             ps = Conexao.getConexao().prepareStatement(sql);
 

@@ -44,11 +44,9 @@ public class Produto {
 
         conteudo.append(nome).append(";");
         conteudo.append(estoque).append(";");
-        conteudo.append(precoVenda).append(";");
         conteudo.append(precoCusto).append(";");
-        conteudo.append(dataCompra).append(";");
-        conteudo.append(dataVenda).append(";");
-        conteudo.append(marca.getId()).append(";");
+        conteudo.append(precoVenda).append(";");
+
         conteudo.append(fornecedor.getId());
 
         GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
@@ -59,10 +57,10 @@ public class Produto {
         String acao = "DELETAR@ID=" + id;
 
         conteudo.append(id).append(";");
-        conteudo.append(nome).append(";");
-        conteudo.append(estoque).append(";");
-        conteudo.append(precoVenda).append(";");
-        conteudo.append(precoCusto);
+        conteudo.append(0).append(";");
+        conteudo.append(0).append(";");
+        conteudo.append(0).append(";");
+        conteudo.append(0);
 
         GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
     }

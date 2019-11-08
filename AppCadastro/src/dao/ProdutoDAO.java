@@ -48,12 +48,12 @@ public class ProdutoDAO implements DAO<Produto> {
             conexao.commit();
             conexao.setAutoCommit(true);
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         } finally {
             try {
                 ps.close();
-            } catch (SQLException ex2) {
+            } catch (Exception ex2) {
                 System.out.println(ex2.getMessage());
             }
         }
@@ -77,12 +77,12 @@ public class ProdutoDAO implements DAO<Produto> {
 
             ps.executeUpdate();
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         } finally {
             try {
                 ps.close();
-            } catch (SQLException ex2) {
+            } catch (Exception ex2) {
                 System.out.println(ex2.getMessage());
             }
         }
@@ -98,12 +98,12 @@ public class ProdutoDAO implements DAO<Produto> {
             ps.setInt(1, id);
             ps.executeUpdate();
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
         } finally {
             try {
                 ps.close();
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 System.out.println("Erro: " + ex.getMessage());
             }
         }

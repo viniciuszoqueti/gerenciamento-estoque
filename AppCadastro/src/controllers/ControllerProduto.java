@@ -29,36 +29,36 @@ public class ControllerProduto {
             dao.delete(produto.getId());
             produto.criaDelete();
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             throw ex;
         }
 
     }
 
-    public void Editar(Produto produto) throws SQLException {
+    public void Editar(Produto produto) throws Exception {
 
         try {
             dao.update(produto);
             produto.criaNovo("ALTERAR");
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             throw ex;
         }
     }
 
-    public void Adicionar(Produto produto) throws SQLException {
+    public void Adicionar(Produto produto) throws Exception {
 
         try {
             int novoId = dao.insert(produto);
             produto.setId(novoId);
             produto.criaNovo("INSERIR");
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             throw ex;
         }
     }
 
-    public AdapterProdutoJTable AllTable() throws SQLException {
+    public AdapterProdutoJTable AllTable() throws Exception {
         List<Produto> produtos = dao.selectAll();
         return new AdapterProdutoJTable(produtos);
     }

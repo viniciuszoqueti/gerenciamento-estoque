@@ -153,7 +153,7 @@ public class JanelaProduto extends javax.swing.JFrame {
             try {
 
                 produtoController.Editar(produto);
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(rootPane, ex);
                 result = false;
             }
@@ -162,7 +162,7 @@ public class JanelaProduto extends javax.swing.JFrame {
             try {
                 produtoController.Adicionar(produto);
 
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(rootPane, ex);
                 result = false;
             }

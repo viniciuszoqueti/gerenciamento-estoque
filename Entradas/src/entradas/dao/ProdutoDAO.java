@@ -21,40 +21,40 @@ import java.util.List;
  */
 public class ProdutoDAO {
 
-    public Produto buscaPorId(int id)  throws DBErrorException, InstantiationException, IllegalAccessException{
-        
+    public Produto buscaPorId(int id) throws DBErrorException, InstantiationException, IllegalAccessException {
+
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
-        try{
+
+        try {
             ps = Conexao.getConexao().prepareStatement("SELECT * FROM produtos WHERE id = ?");
             ps.setInt(1, id);
-            
+
             rs = ps.executeQuery();
-        
+
             Produto p;
-            while(rs.next()){
+            while (rs.next()) {
                 p = new Produto();
                 preencheObjeto(p, rs);
-                
+
                 return p;
             }
-            
-        }catch(ClassNotFoundException | SQLException | ValorInvalidoException ex){
+
+        } catch (ClassNotFoundException | SQLException | ValorInvalidoException ex) {
             throw new DBErrorException(ex.getMessage());
-        }finally{
+        } finally {
             try {
                 rs.close();
                 ps.close();
             } catch (SQLException ex) {
                 throw new DBErrorException(ex.getMessage());
-            }            
-        }        
-        
+            }
+        }
+
         return null;
     }
 
-    private void preencheObjeto(Produto p, ResultSet rs) throws DBErrorException, SQLException, ValorInvalidoException, InstantiationException, IllegalAccessException{
+    private void preencheObjeto(Produto p, ResultSet rs) throws DBErrorException, SQLException, ValorInvalidoException, InstantiationException, IllegalAccessException {
 
         p.setCodigoBarras(rs.getString("codigo_barras"));
         p.setCusto(rs.getDouble("vlr_custo"));
@@ -62,118 +62,112 @@ public class ProdutoDAO {
         p.setMargemLucro(rs.getDouble("margem_lucro"));
         p.setNome(rs.getString("nome"));
         p.setVenda(rs.getDouble("vlr_venda"));
-        
+
         Calendar c = Calendar.getInstance();
-        if (rs.getDate("dat_ultima_compra") != null){
+        if (rs.getDate("dat_ultima_compra") != null) {
             c.setTimeInMillis(rs.getDate("dat_ultima_compra").getTime());
         }
         p.setDatUltimaCompra(c);
-        
+
         Calendar c2 = Calendar.getInstance();
-        if (rs.getDate("dat_ultima_venda") != null){
+        if (rs.getDate("dat_ultima_venda") != null) {
             c.setTimeInMillis(rs.getDate("dat_ultima_venda").getTime());
         }
         p.setDatUltimaVenda(c2);
-        
+
         p.setEstoque(rs.getInt("estoque"));
-        
+
         FornecedorDAO fdao = new FornecedorDAO();
         p.setFornecedor(fdao.buscaPorId(rs.getInt("fornecedores_id")));
-        
-        
+
     }
 
-    public List<Produto> buscaPorDescricao(String desc) throws DBErrorException, InstantiationException, IllegalAccessException{
+    public List<Produto> buscaPorDescricao(String desc) throws DBErrorException, InstantiationException, IllegalAccessException {
 
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         List<Produto> lista = new ArrayList<>();
-        
-        try{
+
+        try {
             ps = Conexao.getConexao().prepareStatement("SELECT * FROM produtos WHERE nome like ? ORDER BY nome");
             ps.setString(1, "%" + desc + "%");
-            
+
             rs = ps.executeQuery();
-        
+
             Produto p;
-            while(rs.next()){
+            while (rs.next()) {
                 p = new Produto();
                 preencheObjeto(p, rs);
-                
+
                 lista.add(p);
             }
-            
-        }catch(ClassNotFoundException | SQLException | ValorInvalidoException  ex){
+
+        } catch (ClassNotFoundException | SQLException | ValorInvalidoException ex) {
             throw new DBErrorException(ex.getMessage());
-        }finally{
+        } finally {
             try {
                 rs.close();
                 ps.close();
             } catch (SQLException ex) {
                 throw new DBErrorException(ex.getMessage());
-            }            
-        }        
-        
+            }
+        }
+
         return lista;
     }
-    
-    public List<Produto> buscaTodos() throws DBErrorException, InstantiationException, IllegalAccessException{
+
+    public List<Produto> buscaTodos() throws DBErrorException, InstantiationException, IllegalAccessException {
 
         Statement st = null;
         ResultSet rs = null;
-        
+
         List<Produto> lista = new ArrayList<>();
-        
-        try{
+
+        try {
             st = Conexao.getConexao().createStatement();
-            
-            
+
             rs = st.executeQuery("SELECT * FROM produtos ORDER BY nome");
-        
+
             Produto p;
-            while(rs.next()){
+            while (rs.next()) {
                 p = new Produto();
                 preencheObjeto(p, rs);
-                
+
                 lista.add(p);
             }
-            
-        }catch(ClassNotFoundException | SQLException | ValorInvalidoException  ex){
+
+        } catch (ClassNotFoundException | SQLException | ValorInvalidoException ex) {
             throw new DBErrorException(ex.getMessage());
-        }finally{
+        } finally {
             try {
                 rs.close();
                 st.close();
             } catch (SQLException ex) {
                 throw new DBErrorException(ex.getMessage());
-            }            
-        }        
-        
+            }
+        }
+
         return lista;
     }
-    
-    
+
     public void insert(Produto parm) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         PreparedStatement ps = null;
 
         try {
 
-            String sql = "INSERT INTO `fornecedores` (razao, nome_fantasia, telefone, celular, nome_contato, cnpj, inscricao, id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO produtos (`id`, `nome`, `vlr_custo`, `vlr_venda`, `estoque`, `fornecedores_id`) VALUES (?, ?, ?, ?, ?, ?);";
 
             ps = Conexao.getConexao().prepareStatement(sql);
 
-            ps.setString(1, parm.getRazao());
-            ps.setString(2, parm.getFantasia());
-            ps.setString(3, parm.getTelefone());
-            ps.setString(4, "(11) 1 1111-111");
-            ps.setString(5, parm.getFantasia());
-            ps.setString(6, parm.getCnpj());
-            ps.setString(7, parm.getInscricao());
-            ps.setInt(8, parm.getId());
+            ps.setInt(1, parm.getId());
+            ps.setString(2, parm.getNome());
+            ps.setDouble(3, parm.getCusto());
+            ps.setDouble(4, parm.getVenda());
+            ps.setInt(5, parm.getEstoque());
+            ps.setInt(6, parm.getFornecedor().getId());
 
             ps.executeUpdate();
-
 
             Conexao.getConexao().commit();
 
@@ -195,18 +189,16 @@ public class ProdutoDAO {
 
         try {
 
-            String sql = "UPDATE `fornecedores` SET `razao` = ?,`nome_fantasia`= ?, telefone= ?, celular= ?, nome_contato= ?, `cnpj`= ?, inscricao WHERE `id` = ?";
+            String sql = "UPDATE `fornecedores` SET `nome` = ?, `vlr_custo`=?, `vlr_venda`=?, `estoque`=?, `fornecedores_id`=? WHERE `id` = ?";
 
             ps = Conexao.getConexao().prepareStatement(sql);
 
-            ps.setString(1, parm.getRazao());
-            ps.setString(2, parm.getFantasia());
-            ps.setString(3, parm.getTelefone());
-            ps.setString(4, "(11) 1 1111-111");
-            ps.setString(5, parm.getFantasia());
-            ps.setString(6, parm.getCnpj());
-            ps.setString(7, parm.getInscricao());
-            ps.setInt(8, parm.getId());
+            ps.setString(1, parm.getNome());
+            ps.setDouble(2, parm.getCusto());
+            ps.setDouble(3, parm.getVenda());
+            ps.setInt(4, parm.getEstoque());
+            ps.setInt(5, parm.getFornecedor().getId());
+            ps.setInt(6, parm.getId());
 
             ps.executeUpdate();
             Conexao.getConexao().commit();
@@ -227,7 +219,7 @@ public class ProdutoDAO {
         PreparedStatement ps = null;
         try {
 
-            String sql = "DELETE FROM fornecedores WHERE id = ?";
+            String sql = "DELETE FROM produtos WHERE id = ?";
             ps = Conexao.getConexao().prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -245,5 +237,5 @@ public class ProdutoDAO {
         //Conexão com o bando de dados
 
     }
-    
+
 }

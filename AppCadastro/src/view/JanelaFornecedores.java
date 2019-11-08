@@ -101,7 +101,7 @@ public class JanelaFornecedores extends javax.swing.JFrame {
             try {
 
                 fornecedorController.Editar(fornecedor);
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(rootPane, ex);
                 result = false;
             }
@@ -109,7 +109,7 @@ public class JanelaFornecedores extends javax.swing.JFrame {
 
             try {
                 fornecedorController.Adicionar(fornecedor);
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(rootPane, ex);
                 result = false;
             }

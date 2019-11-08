@@ -65,11 +65,11 @@ public class Fornecedor {
         String acao = "DELETAR@ID=" + id;
 
         conteudo.append(id).append(";");
-        conteudo.append(razao).append(";");
-        conteudo.append(cpf_cnpj).append(";");
-        conteudo.append(rg_insc).append(";");
-        conteudo.append(telefone).append(";");
-        conteudo.append(fantasia);
+        conteudo.append(0).append(";");
+        conteudo.append(0).append(";");
+        conteudo.append(0).append(";");
+        conteudo.append(0).append(";");
+        conteudo.append(0);
 
         GravaArquivo.criaArquivo(conteudo.toString(), acao, this);
     }
